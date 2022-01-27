@@ -31,4 +31,10 @@ jobs:
         run: npm ci
 
       - name: Run Node tests
+        env:
+          GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+          GH_TEST_OWNER: ${{ secrets.GH_TEST_OWNER }}
+          GH_TEST_REPO: ${{ secrets.GH_TEST_REPO }}
+          GH_TEST_BASE_COMMIT: ${{ secrets.GH_TEST_BASE_COMMIT }}
+          GH_TEST_HEAD_COMMIT: ${{ secrets.GH_TEST_HEAD_COMMIT }}
         run: npm test

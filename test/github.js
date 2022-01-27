@@ -8,7 +8,7 @@ const should = chai.should(); // eslint-disable-line
 const github = require('../lib/github');
 
 describe('github', () => {
-  it('should be an object.', () => {
+  it('should be a function', () => {
     github.should.be.an('function');
   });
 });

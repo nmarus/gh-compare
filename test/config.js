@@ -8,7 +8,7 @@ const should = chai.should(); // eslint-disable-line
 const config = require('../lib/config');
 
 describe('config', () => {
-  it('should be an object.', () => {
+  it('should be an object', () => {
     config.should.be.an('object');
   });
 });
