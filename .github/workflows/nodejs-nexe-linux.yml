@@ -1,0 +1,68 @@
+name: Node.js Build Linux CI
+on:
+  push:
+    tags: [ '*' ]
+  pull_request:
+    tags: [ '*' ]
+jobs:
+  Build-Nexe-Binaries:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.18]
+    outputs:
+      node-version: ${{ matrix.node-version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Cache Node Modules
+        id: node-cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: node-modules-linux-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Node dependencies
+        if: steps.node-cache.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Run Node tests
+        run: npm test
+
+      - name: Cache NEXE Node build
+        id: nexe-cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.nexe
+          key: nexe-node-source-linux-${{ matrix.node-version }}
+
+      - name: Setup Linux packages for nexe build environment
+        run: sudo apt-get install -y python3 g++ make python3-pip
+
+      - name: Remove existing versions of files
+        run: sudo rm -rf dist
+
+      - name: Build distributable binary for Linux
+        run: node build --platform linux
+
+      - name: Build distributable binary for OSX
+        run: node build --platform osx
+
+      - name: Build distributable binary for Win64
+        run: node build --platform win64
+
+      - name: Git Configure
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+      - name: Git Commit / Push
+        run: |
+          git add -A
+          git commit -m "Generated NEXE Binaries"
+          git push origin ${{github.ref_name}}
