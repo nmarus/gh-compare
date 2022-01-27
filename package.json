@@ -1,0 +1,27 @@
+{
+  "name": "gh-compare",
+  "version": "0.1.0",
+  "description": "Compare two GitHub commits",
+  "main": "gh-compare.js",
+  "scripts": {
+    "test": "nyc mocha"
+  },
+  "dependencies": {
+    "inquirer": "^8.2.0",
+    "octokit": "^1.7.1",
+    "yargs": "^17.3.1"
+  },
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "eslint": "^8.7.0",
+    "mocha": "^9.2.0",
+    "nexe": "^4.0.0-beta.19",
+    "nyc": "^15.1.0"
+  },
+  "engines": {
+    "node": ">=14.18"
+  },
+  "private": "true",
+  "author": "Nick Marus <nmarus@gmail.com>",
+  "license": "MIT"
+}
